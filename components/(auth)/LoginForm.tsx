@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import WellMindLogo from '../../assets/images/WellMind_logo_svg.svg';
 import { supabase } from '../../lib/supabase';
 
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -46,7 +47,10 @@ export default function LoginForm() {
   const handleLogin = async () => {
     if (!validateEmail(email) || !validatePassword(password)) return;
 
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
     if (error) {
       setPasswordError(error.message);
     } else {
@@ -63,48 +67,58 @@ export default function LoginForm() {
       <ImageBackground
         source={require('../../assets/images/velvet.jpg')}
         style={{ flex: 1 }}
-        resizeMode="cover"
+        resizeMode='cover'
       >
         <ScrollView
           contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
-          keyboardShouldPersistTaps="handled"
+          keyboardShouldPersistTaps='handled'
         >
           <View style={styles.container}>
+            <WellMindLogo
+              width={100}
+              height={100}
+              style={{ alignSelf: 'center', marginBottom: 20 }}
+            />
             <Text style={styles.title}>Login to WellMind</Text>
 
             <TextInput
-              placeholder="Email"
+              placeholder='Email'
               value={email}
-              onChangeText={(text) => {
+              onChangeText={text => {
                 setEmail(text);
                 validateEmail(text);
               }}
-              autoCapitalize="none"
-              keyboardType="email-address"
+              autoCapitalize='none'
+              keyboardType='email-address'
               style={styles.input}
-              placeholderTextColor="#000"
+              placeholderTextColor='#000'
             />
             {emailError && <Text style={styles.errorText}>{emailError}</Text>}
 
             <TextInput
-              placeholder="Password"
+              placeholder='Password'
               value={password}
-              onChangeText={(text) => {
+              onChangeText={text => {
                 setPassword(text);
                 validatePassword(text);
               }}
               secureTextEntry
               style={styles.input}
-              placeholderTextColor="#000"
+              placeholderTextColor='#000'
             />
-            {passwordError && <Text style={styles.errorText}>{passwordError}</Text>}
+            {passwordError && (
+              <Text style={styles.errorText}>{passwordError}</Text>
+            )}
 
             <TouchableOpacity style={styles.button} onPress={handleLogin}>
               <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => router.push('/(auth)/register')}>
-              <Text style={styles.link}>Don't have an account? <Text style={styles.linkBold}>Register</Text></Text>
+              <Text style={styles.link}>
+                Don't have an account?{' '}
+                <Text style={styles.linkBold}>Register</Text>
+              </Text>
             </TouchableOpacity>
           </View>
         </ScrollView>

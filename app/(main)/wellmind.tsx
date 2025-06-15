@@ -1,15 +1,16 @@
+import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
   ImageBackground,
-  ScrollView,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { useRouter } from 'expo-router';
+import WellMindLogo from '../../assets/images/WellMind_logo_svg.svg';
 import { supabase } from '../../lib/supabase';
 
 export default function WellMindScreen() {
@@ -61,10 +62,7 @@ export default function WellMindScreen() {
       .single();
 
     if (data?.id) {
-      await supabase
-        .from('mood_logs')
-        .update({ mood })
-        .eq('id', data.id);
+      await supabase.from('mood_logs').update({ mood }).eq('id', data.id);
     } else {
       const {
         data: { user },
@@ -94,26 +92,19 @@ export default function WellMindScreen() {
       <ImageBackground
         source={require('../../assets/images/velvet.jpg')}
         style={styles.background}
-        resizeMode="cover"
+        resizeMode='cover'
       >
         <View style={styles.container}>
           <ScrollView
             contentContainerStyle={styles.scrollContent}
-            keyboardShouldPersistTaps="handled"
+            keyboardShouldPersistTaps='handled'
             showsVerticalScrollIndicator={false}
           >
             {/* HEADER */}
-            <View style={styles.textBgWrapper}>
-              <ImageBackground
-                source={require('../../assets/images/velvet3.png')}
-                style={StyleSheet.absoluteFillObject}
-                imageStyle={{ opacity: 0.5, borderRadius: 16 }}
-                resizeMode="cover"
-              />
-              <View style={styles.textBgContent}>
-                <Text style={styles.title}>WellMind</Text>
-                <Text style={styles.subtitle}>Your mental wellness center</Text>
-              </View>
+            <View style={styles.logoWrapper}>
+              <WellMindLogo width={140} height={140} />
+              <Text style={styles.title}>WellMind</Text>
+              <Text style={styles.subtitle}>Your mental wellness center</Text>
             </View>
 
             {/* MAIN GOAL */}
@@ -126,8 +117,11 @@ export default function WellMindScreen() {
             {/* MOODS */}
             <Text style={styles.moodPrompt}>How are you feeling today?</Text>
             <View style={styles.emojiRow}>
-              {['😐', '🙂', '😔'].map((emoji) => (
-                <TouchableOpacity key={emoji} onPress={() => handleMoodSelect(emoji)}>
+              {['😐', '🙂', '😔'].map(emoji => (
+                <TouchableOpacity
+                  key={emoji}
+                  onPress={() => handleMoodSelect(emoji)}
+                >
                   <Text
                     style={[
                       styles.emoji,
@@ -172,20 +166,11 @@ const styles = StyleSheet.create({
   background: { flex: 1 },
   container: { flex: 1, justifyContent: 'space-between', padding: 20 },
   scrollContent: { flexGrow: 1, alignItems: 'center' },
-  textBgWrapper: {
-    position: 'relative',
-    marginBottom: 24,
-    borderRadius: 16,
-    overflow: 'hidden',
-    minHeight: 220,
-    justifyContent: 'center',
-    width: '100%',
-  },
-  textBgContent: {
+  logoWrapper: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 18,
-    zIndex: 1,
+    marginBottom: 24,
+    width: '100%',
   },
   title: { fontSize: 36, fontWeight: 'bold', color: '#000' },
   subtitle: { fontSize: 18, color: '#000' },
